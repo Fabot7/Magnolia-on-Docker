@@ -1,38 +1,38 @@
 #===============================================================#
-# ---- Imagem base com Debian, tomcat, mysql e postgresql ----- #
+# - Using a base image with Debian, tomcat, mysql e postgresql  #
 #===============================================================#
 FROM nicolasbarbe/magnolia-base
 
 #===============================================================#
-# -------- Atribui o mantenedor do sistema dockerizado -------- #
+# ------- Assigning a maintainer for the local project -------- #
 #===============================================================#
 MAINTAINER Fábio Silva da Conceição <fsconceicao@sefaz.al.gov.br>
 
 #===============================================================#
-# ----------- Abre o volume persistente em tomcat8 ------------ #
+# -------- Opening a folder for persistent volume ------------ #
 #===============================================================#
 VOLUME ["/var/lib/tomcat8"]
 
 #===============================================================#
-# --------------- Expôe a porta do Tomcat (8080) -------------- #
+# --------------- Exposing Tomcat port (8080) ----------------- #
 #===============================================================#
 EXPOSE 8080
 
 #===============================================================#
-# ----------- Baixa e descompacta o projeto Magnolia ---------- #
+# --- Downloading and unpacking original Magnolia's project --- #
 #===============================================================#
 WORKDIR /var/tmp
 RUN wget https://nexus.magnolia-cms.com/content/repositories/magnolia.public.releases//info/magnolia/bundle/magnolia-community-demo-bundle/5.7.1/magnolia-community-demo-bundle-5.7.1-tomcat-bundle.zip
 RUN apt-get update
 RUN apt-get install zip unzip -y
 RUN unzip magnolia-community-demo-bundle-5.7.1-tomcat-bundle.zip
-RUN rm -Rf magnolia-community-demo-bundle-5.7.1-tomcat-bundle.zip
 RUN mv magnolia-5.7.1/apache-tomcat-9.0.10 ROOT-Extracted
+RUN rm -Rf magnolia-community-demo-bundle-5.7.1-tomcat-bundle.zip
 RUN rm -Rf magnolia-5.7.1
 
-#===============================================================#
-# - Substitui o conteúdo do projeto original pelo modificado  - #
-#===============================================================#
+#=================================================================#
+# Replacing original Magnolia's project content with own contents #
+#=================================================================#
 
 RUN rm -Rf ROOT-Extracted/webapps/*
 RUN mkdir -p ROOT-Extracted/webapps/WEB-INF
@@ -45,7 +45,7 @@ RUN rm -Rf ROOT-Extracted/conf/*
 COPY conf/* ROOT-Extracted/conf/
 
 #===============================================================#
-# -- Compacta e posiciona o projeto ROOT em /var/lib/tomcat8 -- #
+# Zipping modified Magnolia's project and putting it on Tomcat  #
 #===============================================================#
 RUN zip -r ROOT.zip ROOT-Extracted/*
 RUN rm -Rf ROOT-Extracted
