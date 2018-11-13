@@ -1,0 +1,17 @@
+.catalog:
+  name: sfz-portal-efaz
+  version: SNAPSHOT
+  description:
+    sfz-portal-efaz
+
+MagnoliaAuthorDB:
+  scale: 1
+
+MagnoliaPublicDB:
+  scale: 1
+
+MagnoliaAuthorApp:
+  scale: 1
+
+MagnoliaPublicApp:
+  scale: 1
